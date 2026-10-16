@@ -41,3 +41,74 @@ consultaParaCancelar?.Cancelar();
 
 // Relatório Atualizado
 clinica.ExibirRelatorioGeral();
+
+// ============================================================
+// DESAFIO 3 - INTERFACE GENÉRICA IPROTOTIPO<T>
+// ============================================================
+
+Console.WriteLine();
+Console.WriteLine("==============================================");
+Console.WriteLine("DESAFIO 3 - INTERFACE GENÉRICA");
+Console.WriteLine("==============================================");
+
+// Criando o gerenciador de protótipos
+var gerenciador =
+    new GerenciadorPrototipos();
+
+// Criando o pacote modelo
+var pacoteOriginal =
+    new PacoteExame(
+        "Check-up Cardiológico",
+        "Jejum de 8 horas e evitar cafeína"
+    );
+
+// Adicionando procedimentos
+pacoteOriginal.AdicionarProcedimento(
+    new Procedimento(
+        "Eletrocardiograma",
+        150.00m
+    )
+);
+
+pacoteOriginal.AdicionarProcedimento(
+    new Procedimento(
+        "Ecocardiograma",
+        350.00m
+    )
+);
+
+// Cadastrando o protótipo
+gerenciador.CadastrarPrototipo(
+    "CARDIO_PADRAO",
+    pacoteOriginal
+);
+
+// Obtendo uma cópia fortemente tipada
+// O método Clonar() já retorna PacoteExame.
+var pacoteClonado =
+    gerenciador.ObterClone(
+        "CARDIO_PADRAO"
+    );
+
+if (pacoteClonado != null)
+{
+    pacoteClonado.NomePaciente =
+        "Carlos Eduardo";
+
+    pacoteClonado.AdicionarProcedimento(
+        new Procedimento(
+            "Holter 24h",
+            250.00m
+        )
+    );
+
+    Console.WriteLine();
+    Console.WriteLine("--- PACOTE CLONADO ---");
+
+    pacoteClonado.ExibirResumo();
+
+    Console.WriteLine();
+    Console.WriteLine("--- PACOTE ORIGINAL ---");
+
+    pacoteOriginal.ExibirResumo();
+}
