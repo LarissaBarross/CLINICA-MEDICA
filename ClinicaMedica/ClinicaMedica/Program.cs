@@ -41,3 +41,75 @@ consultaParaCancelar?.Cancelar();
 
 // Relatório Atualizado
 clinica.ExibirRelatorioGeral();
+
+// ============================================================
+// DESAFIO 2 - MEMBERWISECLONE
+// ============================================================
+
+Console.WriteLine();
+Console.WriteLine("==============================================");
+Console.WriteLine("DESAFIO 2 - MEMBERWISECLONE");
+Console.WriteLine("==============================================");
+
+// Criando o gerenciador de protótipos
+var gerenciador =
+    new GerenciadorPrototipos();
+
+// Criando o pacote original
+var pacoteOriginal =
+    new PacoteExame(
+        "Check-up Cardiológico",
+        "Jejum de 8 horas e evitar cafeína"
+    );
+
+// Adicionando procedimentos ao pacote original
+pacoteOriginal.AdicionarProcedimento(
+    new Procedimento(
+        "Eletrocardiograma",
+        150.00m
+    )
+);
+
+pacoteOriginal.AdicionarProcedimento(
+    new Procedimento(
+        "Ecocardiograma",
+        350.00m
+    )
+);
+
+// Cadastrando o pacote original como protótipo
+gerenciador.CadastrarPrototipo(
+    "CARDIO_PADRAO",
+    pacoteOriginal
+);
+
+// Obtendo uma cópia do pacote
+var pacoteClonado =
+    gerenciador.ObterClone(
+        "CARDIO_PADRAO"
+    );
+
+if (pacoteClonado != null)
+{
+    // Personalizando somente a cópia
+    pacoteClonado.NomePaciente =
+        "Carlos Eduardo";
+
+    // Adicionando um procedimento somente na cópia
+    pacoteClonado.AdicionarProcedimento(
+        new Procedimento(
+            "Holter 24h",
+            250.00m
+        )
+    );
+
+    Console.WriteLine();
+    Console.WriteLine("--- PACOTE CLONADO ---");
+
+    pacoteClonado.ExibirResumo();
+
+    Console.WriteLine();
+    Console.WriteLine("--- PACOTE ORIGINAL ---");
+
+    pacoteOriginal.ExibirResumo();
+}
