@@ -41,3 +41,80 @@ consultaParaCancelar?.Cancelar();
 
 // Relatório Atualizado
 clinica.ExibirRelatorioGeral();
+
+// ============================================================
+// DESAFIO 1 - PATTERN PROTOTYPE COM ICLONEABLE
+// ============================================================
+
+Console.WriteLine();
+Console.WriteLine("==============================================");
+Console.WriteLine("DESAFIO 1 - PROTOTYPE COM ICLONEABLE");
+Console.WriteLine("==============================================");
+
+// Criando o gerenciador de protótipos
+var gerenciador =
+    new GerenciadorPrototipos();
+
+// Criando o pacote modelo
+var checkupCardio =
+    new PacoteExame(
+        "Check-up Cardiológico",
+        "Jejum de 8h e evitar cafeína"
+    );
+
+// Adicionando procedimentos ao pacote modelo
+checkupCardio.AdicionarProcedimento(
+    new Procedimento(
+        "Eletrocardiograma",
+        150.00m
+    )
+);
+
+checkupCardio.AdicionarProcedimento(
+    new Procedimento(
+        "Ecocardiograma",
+        350.00m
+    )
+);
+
+// Cadastrando o pacote como protótipo
+gerenciador.CadastrarPrototipo(
+    "CARDIO_PADRAO",
+    checkupCardio
+);
+
+Console.WriteLine("\n--- MODELO ORIGINAL ---");
+checkupCardio.ExibirResumo();
+
+// Buscando uma cópia do protótipo
+// O método Clone() retorna object,
+// por isso o GerenciadorPrototipos faz o cast para PacoteExame.
+var atendimentoCarlos =
+    gerenciador.ObterClone(
+        "CARDIO_PADRAO"
+    );
+
+if (atendimentoCarlos != null)
+{
+    atendimentoCarlos.NomePaciente =
+        "Carlos Eduardo";
+
+    atendimentoCarlos.AdicionarProcedimento(
+        new Procedimento(
+            "Holter 24h",
+            250.00m
+        )
+    );
+
+    Console.WriteLine(
+        "\n--- CÓPIA DO PACOTE ---"
+    );
+
+    atendimentoCarlos.ExibirResumo();
+}
+
+Console.WriteLine(
+    "\n--- MODELO ORIGINAL APÓS A CLONAGEM ---"
+);
+
+checkupCardio.ExibirResumo();
