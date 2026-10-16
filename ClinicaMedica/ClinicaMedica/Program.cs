@@ -41,3 +41,118 @@ consultaParaCancelar?.Cancelar();
 
 // Relatório Atualizado
 clinica.ExibirRelatorioGeral();
+
+// ============================================================
+// DEMONSTRAÇÃO DO PATTERN PROTOTYPE
+// ============================================================
+
+Console.WriteLine();
+Console.WriteLine("==============================================");
+Console.WriteLine("DEMONSTRAÇÃO DO PATTERN PROTOTYPE");
+Console.WriteLine("==============================================");
+
+// Criação do gerenciador de protótipos
+var gerenciador = new GerenciadorPrototipos();
+
+// Criando o modelo do pacote cardiológico
+var checkupCardio = new PacoteExame(
+    "Check-up Cardiológico",
+    "Jejum de 8h e evitar cafeína"
+);
+
+// Adicionando exames ao modelo
+checkupCardio.AdicionarProcedimento(
+    new Procedimento(
+        "Eletrocardiograma",
+        150.00m
+    )
+);
+
+checkupCardio.AdicionarProcedimento(
+    new Procedimento(
+        "Ecocardiograma",
+        350.00m
+    )
+);
+
+// Cadastrando o pacote como protótipo
+gerenciador.CadastrarPrototipo(
+    "CARDIO_PADRAO",
+    checkupCardio
+);
+
+Console.WriteLine("\n--- MODELO BASE ---");
+checkupCardio.ExibirResumo();
+
+// ============================================================
+// CÓPIA PROFUNDA
+// ============================================================
+
+Console.WriteLine();
+Console.WriteLine("--- ATENDIMENTO DE CARLOS ---");
+Console.WriteLine("Cópia profunda");
+
+var atendimentoCarlos =
+    gerenciador.ObterClone("CARDIO_PADRAO");
+
+if (atendimentoCarlos != null)
+{
+    atendimentoCarlos.NomePaciente = "Carlos Eduardo";
+
+    atendimentoCarlos.AdicionarProcedimento(
+        new Procedimento(
+            "Holter 24h",
+            250.00m
+        )
+    );
+
+    atendimentoCarlos.ExibirResumo();
+}
+
+// ============================================================
+// CÓPIA SUPERFICIAL
+// ============================================================
+
+Console.WriteLine();
+Console.WriteLine("--- ATENDIMENTO DE ANA ---");
+Console.WriteLine("Cópia superficial");
+
+var modeloParaTeste =
+    gerenciador.ObterClone("CARDIO_PADRAO");
+
+if (modeloParaTeste != null)
+{
+    var atendimentoAna =
+        modeloParaTeste.ClonarSuperficial();
+
+    atendimentoAna.NomePaciente = "Ana Maria";
+
+    atendimentoAna.AdicionarProcedimento(
+        new Procedimento(
+            "Glicemia em Jejum",
+            30.00m
+        )
+    );
+
+    Console.WriteLine("\nAtendimento da Ana:");
+    atendimentoAna.ExibirResumo();
+
+    Console.WriteLine();
+    Console.WriteLine(
+        "O modelo original também foi alterado:"
+    );
+
+    modeloParaTeste.ExibirResumo();
+}
+
+// ============================================================
+// VERIFICAÇÃO DA CÓPIA PROFUNDA
+// ============================================================
+
+Console.WriteLine();
+Console.WriteLine("--- VERIFICAÇÃO FINAL ---");
+Console.WriteLine(
+    "O atendimento de Carlos continua isolado:"
+);
+
+atendimentoCarlos?.ExibirResumo();
